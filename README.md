@@ -1,8 +1,8 @@
-# ⚛️ Quantum Random Number Generator (QRNG)
+#  Quantum Random Number Generator (QRNG)
 
 
 
-## 🤔 First, What is Wrong with Normal Random Numbers?
+## First, What is Wrong with Normal Random Numbers?
 
 When you use `random.randint()` in Python, the computer uses a **secret mathematical formula** to generate numbers that *look* random — but they are not truly random. They follow a pattern.
 
@@ -12,7 +12,7 @@ If someone figures out that formula or the starting value (called a "seed"), the
 
 ---
 
-## 💡 The Simple Idea Behind This Project
+##  The Simple Idea Behind This Project
 
 Think of a coin:
 
@@ -39,11 +39,11 @@ When we **measure** a qubit in superposition, it randomly collapses to 0 or 1. W
 
 ---
 
-## 🚪 Quantum Gates — What Are They?
+##  Quantum Gates — What Are They?
 
 Just like classical computers have logic gates (AND, OR, NOT), quantum computers have **quantum gates** that operate on qubits.
 
-Here are the gates explained in plain English:
+
 
 ---
 
@@ -184,7 +184,7 @@ This method (message XOR truly-random key) is called a **One-Time Pad (OTP)**. I
 
 ---
 
-## 📋 Features
+##  Features
 
 - ✅ Single qubit random bit generation using Hadamard gate
 - ✅ Multi-qubit bitstring generation (8-bit to 256-bit)
@@ -196,7 +196,7 @@ This method (message XOR truly-random key) is called a **One-Time Pad (OTP)**. I
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 | Tool | Purpose |
 |------|---------|
@@ -219,7 +219,7 @@ Google Colab (Easiest, no setup needed)
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 qrng-qiskit/
@@ -230,7 +230,7 @@ qrng-qiskit/
 
 ---
 
-## 📊 Sample Output
+##  Sample Output
 
 ```
 ==================================================
