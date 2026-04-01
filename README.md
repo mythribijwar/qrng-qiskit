@@ -256,5 +256,3 @@ Quantum OTP Encryption:
 
 
 ---
-
-> **Made as part of preparation for the Quantum Communication Internship — IITM CDOT Samgnya 2026**
