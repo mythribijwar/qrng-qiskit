@@ -25,7 +25,7 @@ This project uses that idea to generate truly random numbers!
 
 ---
 
-## 🔬 What is a Qubit?
+## What is a Qubit?
 
 A **qubit** is the quantum version of a classical bit.
 
@@ -47,7 +47,7 @@ Just like classical computers have logic gates (AND, OR, NOT), quantum computers
 
 ---
 
-### H — Hadamard Gate ⭐ (Most Important One)
+### H — Hadamard Gate
 
 > **"Start spinning the coin"**
 
@@ -118,7 +118,7 @@ Needs two controllers. The quantum version of an AND gate. Makes quantum compute
 
 ---
 
-## ⚙️ How This Project Works — Step by Step
+## How This Project Works — Step by Step
 
 ```
 Step 1: Start with qubit |0⟩
@@ -136,7 +136,7 @@ Step 6: Use that number as an encryption key → unbreakable security
 
 ---
 
-## 🔐 How Does Encryption Work? (Super Simple)
+##  How Does Encryption Work? (Super Simple)
 
 Imagine you want to send **"HI"** to your friend secretly.
 
@@ -171,7 +171,7 @@ XOR with the same key twice gives you back the original. That is how decryption 
 
 ---
 
-## 🔒 Why Can Nobody Decode It?
+##  Why Can Nobody Decode It?
 
 | Classical Key | Quantum Key |
 |--------------|-------------|
