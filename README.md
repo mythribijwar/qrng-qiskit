@@ -1,258 +1,106 @@
-#  Quantum Random Number Generator (QRNG)
-
-
-
-## First, What is Wrong with Normal Random Numbers?
-
-When you use `random.randint()` in Python, the computer uses a **secret mathematical formula** to generate numbers that *look* random — but they are not truly random. They follow a pattern.
-
-If someone figures out that formula or the starting value (called a "seed"), they can **predict every number** your program will generate. This is dangerous for encryption and security.
-
-**Quantum randomness is different.** It uses the laws of physics — and physics is truly unpredictable.
+# Quantum Random Number Generator (QRNG)
+*Built with Qiskit on Google Colab*
 
 ---
 
-##  The Simple Idea Behind This Project
+## Why I built this
 
-Think of a coin:
+Python's `random.randint()` is not actually random. It uses a formula called Mersenne Twister — give it the same starting seed, you get the exact same numbers. That means a smart attacker who knows the seed can predict every "random" number your program generates.
 
-- A coin that has **landed** = classical bit → it is either Heads (1) or Tails (0). Fixed. Decided.
-- A coin that is **still spinning** = qubit → it is both Heads AND Tails at the same time!
-
-The moment the spinning coin lands, it randomly becomes Heads or Tails — and **nobody in the universe can predict which one**, not even the most powerful computer. This is called **superposition** in quantum physics.
-
-This project uses that idea to generate truly random numbers!
+Quantum mechanics gives us something genuinely different — randomness that doesn't come from a formula, but from physics itself.
 
 ---
 
-## What is a Qubit?
+## The physics behind it
 
-A **qubit** is the quantum version of a classical bit.
+A normal bit is like a coin already lying on a table. It's heads or tails — fixed, decided.
 
-| Classical Bit | Qubit |
-|---------------|-------|
-| Either 0 OR 1 | Both 0 AND 1 at the same time (until measured) |
-| Like a light switch | Like a spinning coin |
-| Predictable | Truly random when measured |
+A qubit is like a coin spinning in the air. It is not heads *or* tails yet. It is genuinely both at the same time. This is called **superposition**, and it's not a metaphor — it's how quantum particles actually behave.
 
-When we **measure** a qubit in superposition, it randomly collapses to 0 or 1. We collect many of these random 0s and 1s to build a random number.
-
----
-
-##  Quantum Gates — What Are They?
-
-Just like classical computers have logic gates (AND, OR, NOT), quantum computers have **quantum gates** that operate on qubits.
-
-
-
----
-
-### H — Hadamard Gate
-
-> **"Start spinning the coin"**
-
-This is the heart of the entire project.
-
-- You give it a qubit that is definitely 0
-- It puts the qubit into **superposition** — now it is both 0 and 1 at the same time
-- When you measure it → you randomly get 0 or 1
-- No formula. No pattern. Pure physics.
+The **Hadamard gate** creates this state mathematically:
 
 ```
-|0⟩  →  [H gate]  →  superposition  →  Measure  →  0 or 1 (random!)
+|0⟩  →  (|0⟩ + |1⟩) / √2
 ```
 
+This means: take a qubit that is definitely 0, and put it into an equal mix of 0 and 1. The √2 just keeps the total probability at 100%.
+
+When you **measure** this qubit, the superposition collapses — the qubit becomes either 0 or 1 with exactly 50% chance each. Nothing caused that choice. No seed. No formula. The universe just picked. This is why quantum randomness is fundamentally different from anything a classical computer can produce.
+
 ---
 
-### X — Pauli-X Gate
+## What we built in Colab
 
-> **"Flip it"** — works exactly like the NOT gate in classical computers
+We applied the Hadamard gate to N qubits, measured each one, and collected the results as a bitstring. That bitstring — born from N separate quantum collapse events — is our random number.
 
 ```
-0 → 1    and    1 → 0
+|0⟩ → [H] → superposition → measure → 1
+|0⟩ → [H] → superposition → measure → 0
+|0⟩ → [H] → superposition → measure → 1
+...
+→ random bitstring: 10110010 → random number: 178
 ```
 
----
-
-### Y — Pauli-Y Gate
-
-> **"Flip it and twist it"**
-
-Like X gate but also adds an invisible twist called **phase** that affects how qubits interact with each other.
+We ran this on Qiskit's Aer simulator, which accurately simulates quantum behavior locally without needing a real quantum computer.
 
 ---
 
-### Z — Pauli-Z Gate
+## Quantum gates used
 
-> **"Twist only, don't flip"**
+**H (Hadamard)** — puts a qubit into superposition. Core of everything here.
 
-Leaves 0 unchanged. Adds a phase twist to 1. Important for interference and error correction.
+**X (Pauli-X)** — flips the qubit. 0 becomes 1, 1 becomes 0. Quantum version of NOT.
 
----
+**CNOT** — uses two qubits. If the first is 1, it flips the second. This is how entanglement is created.
 
-### CNOT — Controlled-NOT Gate
+**Toffoli** — like CNOT but needs two controllers. Only flips target if both controllers are 1.
 
-> **"If this qubit is 1, flip the other one"**
-
-Uses two qubits — one controller, one target.
-- Controller = 1 → flip the target
-- Controller = 0 → do nothing
-
-This is how **entanglement** is created.
+The only gate actively doing the work in QRNG is the Hadamard. The rest are included here for context.
 
 ---
 
-### SWAP Gate
+## Encryption using quantum keys
 
-> **"Exchange two qubits"**
-
-Whatever qubit A has, qubit B gets it. And vice versa.
-
----
-
-### Toffoli Gate
-
-> **"Only flip if BOTH controllers are 1"**
-
-Needs two controllers. The quantum version of an AND gate. Makes quantum computers universal.
-
----
-
-## How This Project Works — Step by Step
+We used the quantum-generated bits as a One-Time Pad (OTP) key. The idea is simple — XOR your message bits with the key bits:
 
 ```
-Step 1: Start with qubit |0⟩
+Message : 01001000  (H)
+Key     : 11010110  (quantum random)
+Result  : 10011110  (ciphertext — meaningless without the key)
+```
 
-Step 2: Apply Hadamard gate → qubit enters superposition (both 0 and 1)
+XOR the ciphertext with the same key again and you recover the original message. That's decryption.
 
-Step 3: Measure the qubit → randomly collapses to 0 or 1
+Claude Shannon proved in 1949 that OTP is mathematically unbreakable — as long as the key is truly random and used only once. Classical PRNGs don't qualify. Quantum measurement does.
 
-Step 4: Repeat for N qubits → get N random bits
+---
 
-Step 5: Convert bits to a number → truly random number!
+## Features
 
-Step 6: Use that number as an encryption key → unbreakable security
+- Random bit, bitstring, and integer generation using Hadamard gates
+- 128-bit and 256-bit encryption key generation
+- One-Time Pad encryption and decryption
+- Quantum vs classical randomness distribution comparison
+- Circuit diagram visualization
+
+---
+
+## How to run
+
+Open in Google Colab, run the first cell to install dependencies, then run all cells in order.
+
+```bash
+pip install qiskit qiskit-aer matplotlib
 ```
 
 ---
 
-##  How Does Encryption Work? (Super Simple)
-
-Imagine you want to send **"HI"** to your friend secretly.
-
-**Step 1** — Convert message to binary:
-```
-H I  →  01001000  01001001
-```
-
-**Step 2** — Generate a quantum random key (same length):
-```
-Key  →  11010110  00101110
-```
-
-**Step 3** — Mix using XOR:
-```
-Message : 01001000  01001001
-Key     : 11010110  00101110
-Result  : 10011110  01100111  ← looks like gibberish to anyone without the key!
-```
-
-**Step 4** — Friend XORs the gibberish with the same key → gets "HI" back.
-
-### What is XOR?
-
-Simple rule: same bits → 0, different bits → 1
-
-```
-0 XOR 0 = 0    1 XOR 1 = 0    0 XOR 1 = 1    1 XOR 0 = 1
-```
-
-XOR with the same key twice gives you back the original. That is how decryption works!
-
----
-
-##  Why Can Nobody Decode It?
-
-| Classical Key | Quantum Key |
-|--------------|-------------|
-| Generated by a formula | Generated by physics |
-| Has a seed → reproducible | No seed → cannot be reproduced |
-| A hacker can find the pattern | No pattern exists in the universe |
-| Breakable with enough computing power | Mathematically proven unbreakable |
-
-This method (message XOR truly-random key) is called a **One-Time Pad (OTP)**. It was proven in 1949 by Claude Shannon to be **100% unbreakable** as long as the key is truly random. Quantum physics gives us that randomness.
-
----
-
-##  Features
-
-- ✅ Single qubit random bit generation using Hadamard gate
-- ✅ Multi-qubit bitstring generation (8-bit to 256-bit)
-- ✅ Random integer in any custom range
-- ✅ 128-bit and 256-bit quantum encryption key generation
-- ✅ One-Time Pad encryption and decryption using quantum keys
-- ✅ Visual comparison: quantum vs classical random number distribution
-- ✅ Quantum circuit diagram visualization
-
----
-
-##  Tech Stack
-
-| Tool | Purpose |
-|------|---------|
-| Python 3 | Programming language |
-| Qiskit (IBM Quantum) | Building and running quantum circuits |
-| Qiskit Aer | Local quantum simulator (no real quantum computer needed) |
-| Matplotlib | Plotting and visualization |
-
----
-
-## 🚀 How to Run
-
-Google Colab (Easiest, no setup needed)
-
-1. Open [Google Colab](https://colab.research.google.com/)
-2. Upload the `QRNG_project.ipynb` file
-3. Run the first cell to install libraries
-4. Run all remaining cells one by one
-
-
----
-
-##  Project Structure
+## Project structure
 
 ```
 qrng-qiskit/
-│
-├── QRNG_project.ipynb     ← Main notebook (all code is here)
-└── README.md              ← This file
+├── QRNG_project.ipynb
+└── README.md
 ```
-
----
-
-##  Sample Output
-
-```
-==================================================
-  QUANTUM RANDOM NUMBER GENERATOR (QRNG)
-  Built with Qiskit
-==================================================
-
-1. Single random bit      : 1
-2. Random 8-bit string    : 10110010
-3. Random number (1-100)  : 73
-4. Random dice roll (1-6) : 4
-5. 128-bit encryption key : a3f2c19d4e87b650cd213af098e7412b
-
-Quantum OTP Encryption:
-  Original message  : HELLO QUANTUM
-  Quantum key (hex) : d4a1f398c2b047e1
-  Ciphertext (hex)  : b3c2a481f1d12683
-  Decrypted back    : HELLO QUANTUM
-```
-
----
-
-
 
 ---
