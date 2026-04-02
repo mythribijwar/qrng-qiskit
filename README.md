@@ -3,19 +3,16 @@
 
 ---
 
-## Why I built this
+## Problem Statment
 
-Python's `random.randint()` is not actually random. It uses a formula called Mersenne Twister — give it the same starting seed, you get the exact same numbers. That means a smart attacker who knows the seed can predict every "random" number your program generates.
+Python's `random.randint()` is not actually random. It uses a formula called Mersenne Twister — give it the same starting seed, you get the exact same numbers. That means a attacker who knows the seed can predict every "random" number your program generates.
 
-Quantum mechanics gives us something genuinely different — randomness that doesn't come from a formula, but from physics itself.
+Quantum mechanics— randomness that doesn't come from a formula, but from physics itself.
 
 ---
 
-## The physics behind it
 
-A normal bit is like a coin already lying on a table. It's heads or tails — fixed, decided.
 
-A qubit is like a coin spinning in the air. It is not heads *or* tails yet. It is genuinely both at the same time. This is called **superposition**, and it's not a metaphor — it's how quantum particles actually behave.
 
 The **Hadamard gate** creates this state mathematically:
 
@@ -25,7 +22,7 @@ The **Hadamard gate** creates this state mathematically:
 
 This means: take a qubit that is definitely 0, and put it into an equal mix of 0 and 1. The √2 just keeps the total probability at 100%.
 
-When you **measure** this qubit, the superposition collapses — the qubit becomes either 0 or 1 with exactly 50% chance each. Nothing caused that choice. No seed. No formula. The universe just picked. This is why quantum randomness is fundamentally different from anything a classical computer can produce.
+When you **measure** this qubit, the superposition collapses — the qubit becomes either 0 or 1 with exactly 50% chance each. Nothing caused that choice. No seed. No formula. This is why quantum randomness is fundamentally different from anything a classical computer can produce.
 
 ---
 
@@ -69,9 +66,8 @@ Key     : 11010110  (quantum random)
 Result  : 10011110  (ciphertext — meaningless without the key)
 ```
 
-XOR the ciphertext with the same key again and you recover the original message. That's decryption.
+XOR the ciphertext with the same key again and recover the original message.
 
-Claude Shannon proved in 1949 that OTP is mathematically unbreakable — as long as the key is truly random and used only once. Classical PRNGs don't qualify. Quantum measurement does.
 
 ---
 
