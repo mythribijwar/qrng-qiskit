@@ -65,7 +65,7 @@ Key     : 11010110  (quantum random)
 Result  : 10011110  (ciphertext — meaningless without the key)
 ```
 
-XOR the ciphertext with the same key again and you recover the original message. When the key is truly random, same length as the message, and used only once, this encryption is mathematically proven unbreakable — Shannon 1949.
+XOR the ciphertext with the same key again and you recover the original message.  the key is truly random so cannot be decrypted 
 
 ---
 
@@ -90,7 +90,7 @@ MT result   → 100% prediction accuracy  ← fully cracked
 QRNG result →   0% prediction accuracy  ← nothing to crack
 ```
 
-This single experiment demonstrates the core difference more clearly than any statistical test: Mersenne Twister has an internal state that can be cloned. Quantum RNG has no internal state — ever.
+Mersenne Twister has an internal state that can be cloned. Quantum RNG has no internal state.
 
 ---
 
